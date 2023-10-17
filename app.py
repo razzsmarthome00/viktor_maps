@@ -43,6 +43,7 @@ def index():
             # Handle the case where conversion fails (e.g., invalid input)
             print("Invalid distance string")
             return None
+        
     if request.method == 'POST':
         origin = request.form['origin']
         boarder_passage = request.form['boarder_passage']
