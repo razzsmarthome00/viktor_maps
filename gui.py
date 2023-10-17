@@ -3,7 +3,7 @@ import requests
 
 
 file=open("api_key.txt","r")
-
+api_key =str(file.read())
 
 def get_distance_duration(origin, destination, api_key):
     base_url = "https://maps.googleapis.com/maps/api/distancematrix/json"
@@ -19,6 +19,7 @@ def get_distance_duration(origin, destination, api_key):
     data = response.json()
 
     if data['status'] == 'OK':
+        print(data)
         element = data['rows'][0]['elements'][0]
         distance = element['distance']['text']
         duration = element['duration']['text']
@@ -26,10 +27,11 @@ def get_distance_duration(origin, destination, api_key):
     else:
         return "Error occurred: " + data['status']
 
+
 def to_int(distance_string):
     try:
         # Attempt to convert the string to a floating-point number
-        distance_float = float(distance_string.replace(' km', ''))
+        distance_float = float(distance_string.replace(' km', '').replace(',',''))
         # Convert the floating-point number to an integer (rounding to the nearest integer)
         distance_integer = int(round(distance_float))
         return distance_integer
@@ -39,7 +41,7 @@ def to_int(distance_string):
         return None
 
 # Function to be called when the button is clicked
-def on_button_click():
+def on_button_click(event=None):
     # Get selected cities from the dropdown menus
     origin = origin_var.get()
     boarder_passage = boarder_passage_var.get()
@@ -47,11 +49,11 @@ def on_button_click():
     dest = dest_var.get()
     #boarder_passage = f"{51.016145},{15.065076}"
 
-    api_key =str(file.read())
+    
     hamn_polen = "Swinoujscie"
  
     if boarder_passage == "Habartice":
-        boarder_passage = "Habartice, 46373 Habartice u Frýdlantu, Tjeckien"
+        boarder_passage = "Habartice, 46373 Habartice u Frydlantu, Tjeckien"
     
 
     if boarder_passage=="Ingen":
@@ -69,6 +71,7 @@ def on_button_click():
     label_output1.config(text="Distance: " + str(distance) + " km")
     label_output2.config(text="Kostnad: " + str(round(distance*1.1+330)) +" euro")
 
+
 # Create the main window
 root = tk.Tk()
 root.title("Viktor Distance Calculator")
@@ -76,7 +79,6 @@ root.title("Viktor Distance Calculator")
 # List of cities for the dropdown menus
 cities = ["Habartice", "Bohumin","Ingen"]
 hamn = ["Trelleborg", "Ystad"]
-
 
 # Variables to store the selected cities
 boarder_passage_var = tk.StringVar(root)
@@ -120,5 +122,11 @@ label_output1.pack()
 label_output2 = tk.Label(root, text="")
 label_output2.pack()
 
+# Enables the enter button to start the search
+root.bind('<Return>', on_button_click)
+
 # Start the tkinter main loop
 root.mainloop()
+
+
+

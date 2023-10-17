@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Calculator</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb4si8VfgANQAbbuitlQ1b3ojjQNeRdL8&callback=initMap" async defer></script>
+</head>
+
+<body>
+    <h1>Distance Calculator</h1>
+    <form method="post">
+        <label for="origin">Start stad:</label>
+        <input type="text" id="origin" name="origin" required><br><br>
+
+        <label for="boarder_passage">Boarderpassage:</label>
+        <select id="boarder_passage" name="boarder_passage" required>
+            {% for option in boarder_passage_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="hamn">Hamn i Sverige:</label>
+        <select id="hamn" name="hamn" required>
+            {% for option in hamn_options %}
+            <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="dest">Destination:</label>
+        <input type="text" id="dest" name="dest" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if distance and cost %}
+    <h2>Sträcka: {{ distance }} km</h2>
+    <h2>Kostnad: {{ cost }} euro</h2>
+    {% endif %}
+
+    <div id="map" style="height: 400px;"></div>
+</body>
+
+</html>
